@@ -5,7 +5,8 @@
 #Parcel ref; e.g. NY12433412 format = paste0("LL", "xx1", "yy1", "xx2", "yy2")
 
 #Import data
-fep_data <- read.csv("sample_data/FEP_blanket_bog_all_2.xlsx.csv", header = TRUE)
+
+fep_data <- read.csv("some_fep_data.csv", header = TRUE)
 
 #make vector to convert
 
