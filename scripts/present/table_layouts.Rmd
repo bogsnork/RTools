@@ -1,0 +1,71 @@
+---
+title: "table layouts"
+output: html_notebook
+---
+
+```{r}
+library(tidyverse)
+```
+
+
+# with knitr::kable
+
+```{r}
+#table layout (looks bad in Rmd but good in html)
+  #prints full table, no scrolling.
+library(knitr)
+iris %>% head() %>%  knitr::kable(caption = "iris as kable")
+
+```
+
+# with flextable
+
+```{r}
+#format table
+#looks great, customisable
+library(flextable)
+iris %>% head() %>%  flextable() %>% set_caption("iris as flextable")
+```
+
+# with DT::datatable
+
+```{r}
+#format table
+  #searchable interactive table
+library(DT)
+iris %>% datatable(caption = "iris as datatable")
+```
+
+# table with Totals
+
+```{r}
+# include subtotals in table
+library(flextable)
+  #if you're subsetting, write the data to a temporary table
+tabledata <- iris %>% head() %>% select(Species, everything())
+
+tabledata %>%
+  flextable() %>%
+  add_footer_row(
+    values = c("Totals",as.character(colSums(select_if(tabledata, is.numeric)))), #calc totals and add
+    colwidths = rep(1, length.out = ncol(tabledata))) %>% #this is annoying but necessary
+  bold(j = ncol(tabledata)) %>% bold(part = "footer") %>% #bolds the totals
+  align(align = "right", part = "footer") %>% #aligns the bottom row
+  set_caption("iris as flextable") %>%
+  autofit()
+```
+
+```{r}
+#alternatively I've written a bespoke function that does this
+source("../functions/flex_totals.R")
+
+flex_totals(iris %>% head())
+
+#also no need to rearrange the columns
+```
+
+
+
+
+
+
